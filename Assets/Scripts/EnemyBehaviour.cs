@@ -7,6 +7,7 @@ public class EnemyBehaviour : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Transform waypointTransform;
+    public Transform playerTransform;
     public Transform groupTransform;
 
 
@@ -35,6 +36,10 @@ public class EnemyBehaviour : MonoBehaviour
     }
     void Update()
     {
-        
+        float angle = Vector3.Angle(transform.forward, playerTransform.position - transform.position);  //création d'un angle de vision : direction de la vue, position du player - position de l'ennemi
+
+        if(angle <= 45){
+            print("On le voit!");
+        }
     }
 }

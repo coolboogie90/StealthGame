@@ -1770,6 +1770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e82c8d6573d49346bcf2c7b8cdc8865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1334480097}
   groupTransform: {fileID: 56478153}
 --- !u!195 &582994550
 NavMeshAgent:
@@ -3872,6 +3873,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1334480097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  m_PrefabInstance: {fileID: 278538921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349465781
 GameObject:
   m_ObjectHideFlags: 0
