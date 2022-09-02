@@ -5,16 +5,25 @@ using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    public enum State{
+        isWalking, isChasing
+    }
+    public State status = State.isWalking;
     private NavMeshAgent agent;
     private Transform waypointTransform;
     public Transform playerTransform;
     public Transform groupTransform;
+
+    public Transform centerEye;
 
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         GetNewDestination();
+        if(centerEye == null){
+            Debug.LogError("You need to define the variable centerEye");
+        }
     }
     void GetNewDestination()
     {
@@ -32,14 +41,47 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if(other.transform == waypointTransform){
             GetNewDestination();
+        
+        }
+    }
+
+    private bool DetectPlayer() {
+        Vector3 direction = playerTransform.position - centerEye.position;
+        direction = direction.normalized;
+        float angle = Vector3.Angle(centerEye.forward, direction);
+
+        if(angle <= 45) {
+            RaycastHit raycasthit;
+            Debug.DrawRay(centerEye.position, direction * 100, Color.red, 1f);
+
+            if(Physics.Raycast(centerEye.position, direction, out raycasthit)) {
+                Debug.Log($"Hit : {raycasthit.transform.name}");
+                if(raycasthit.transform == playerTransform){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    void UpdateWalking(){
+        if(DetectPlayer()){
+            status = State.isChasing;
+        }    
+
+    }
+    void UpdateChasing(){
+        agent.SetDestination(playerTransform.position);
+        if(!DetectPlayer()){
+            status = State.isWalking;   
+            GetNewDestination();     
         }
     }
     void Update()
     {
-        float angle = Vector3.Angle(transform.forward, playerTransform.position - transform.position);  //création d'un angle de vision : direction de la vue, position du player - position de l'ennemi
-
-        if(angle <= 45){
-            print("On le voit!");
+        switch (status)
+        {
+            case State.isWalking: UpdateWalking(); break;
+            case State.isChasing: UpdateChasing(); break;
         }
     }
 }
