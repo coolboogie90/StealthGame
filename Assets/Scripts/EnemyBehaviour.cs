@@ -25,7 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
             Debug.LogError("You need to define the variable centerEye");
         }
     }
-    void GetNewDestination()
+    private void GetNewDestination()
     {
         Transform currentDestination = waypointTransform;
         
@@ -37,7 +37,7 @@ public class EnemyBehaviour : MonoBehaviour
         
         agent.SetDestination(waypointTransform.position); 
     }
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.transform == waypointTransform){
             GetNewDestination();
@@ -48,6 +48,7 @@ public class EnemyBehaviour : MonoBehaviour
     private bool DetectPlayer() {
         Vector3 direction = playerTransform.position - centerEye.position;
         direction = direction.normalized;
+        
         float angle = Vector3.Angle(centerEye.forward, direction);
 
         if(angle <= 45) {
@@ -55,7 +56,7 @@ public class EnemyBehaviour : MonoBehaviour
             Debug.DrawRay(centerEye.position, direction * 100, Color.red, 1f);
 
             if(Physics.Raycast(centerEye.position, direction, out raycasthit)) {
-                Debug.Log($"Hit : {raycasthit.transform.name}");
+                //Debug.Log($"Hit : {raycasthit.transform.name}");
                 if(raycasthit.transform == playerTransform){
                     return true;
                 }
